@@ -5,8 +5,8 @@ import sys
 import re
 
 MAJOR: int=0
-MEDIUM: int=3
-MINOR: int=2
+MEDIUM: int=4
+MINOR: int=0
 VERSION: str=f"{MAJOR}.{MEDIUM}.{MINOR}"
 IMPORTANT: dict[str,int]={
     "prepare regex":0xABCD,
