@@ -90,9 +90,9 @@ for addr,func in funcs.items():
 
 if __name__!="__main__":
     sys.exit(0)
-print("This is ctffuck version",VERSION,"environment.")
+print("This is ctff version",VERSION,"environment.")
 if len(sys.argv)<2:
-    print("Usage: ctfuck [script]")
+    print("Usage: ctff [script]")
     sys.exit(1)
 with open(sys.argv[1],"r") as f:
     script=non_hex_pattern.sub("", f.read())
