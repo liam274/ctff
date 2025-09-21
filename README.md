@@ -29,4 +29,4 @@ You can exchange build-in functions and any boxes to rename them:
 0BEE AACB
 EACD 0100
 ```
-Then you can use 0100 to access the write function!
+Then you can use `0100` to access the write function!
