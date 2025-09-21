@@ -120,6 +120,11 @@ while i<script_length:
         memory[command](scriptt[i+1])
         i+=1
     else:
+        time: int=0
         while not callable(memory[command]):
             command=memory[command]
+            time+=1
+            if time>MEM_SIZE:
+                print("Possible infinite loop detected.",file=sys.stderr)
+                sys.exit(1)
     i+=1
