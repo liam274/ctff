@@ -138,4 +138,8 @@ while i<script_length:
             if time>MEM_SIZE:
                 print("Possible infinite loop detected.",file=sys.stderr)
                 sys.exit(1)
+        if i+1>=script_length:
+            print("Missing argument for instruction at the last chunk.",file=sys.stderr)
+            sys.exit(1)
+        memory[command](scriptt[i+1])
     i+=1
