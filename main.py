@@ -88,30 +88,31 @@ funcs: dict[int,Callable[...,Any]]={
 for addr,func in funcs.items():
     memory[addr]=func
 
-if __name__=="__main__":
-    print("This is ctffuck version",VERSION,"environment.")
-    if len(sys.argv)<2:
-        print("Usage: ctfuck [script]")
-        sys.exit(1)
-    with open(sys.argv[1],"r") as f:
-        script=non_hex_pattern.sub("", f.read())
-    if len(script)%4!=0:
-        print("Script length must be multiple of 4",file=sys.stderr)
-        sys.exit(1)
-    scriptt: list[int]=[int(i,base=16)for i in split(script,4)]
-    DEBUG: bool="-d" in sys.argv or "--debug" in sys.argv
-    i: int=0
-    script_length: int=len(scriptt)
-    while i<script_length:
-        command: int=scriptt[i]
-        if callable(memory[command]):
-            if i+1>=script_length:
-                print("Missing argument for instruction at the last chunk.",file=sys.stderr)
-                sys.exit(1)
-            memory[command](scriptt[i+1])
-            i+=1
-        else:
-            if DEBUG:
-                print(f"{command:04X}: ",end="")
-            print(memory[command],file=memory[OUTPUT_ADDR],end="")
+if __name__!="__main__":
+    sys.exit(0)
+print("This is ctffuck version",VERSION,"environment.")
+if len(sys.argv)<2:
+    print("Usage: ctfuck [script]")
+    sys.exit(1)
+with open(sys.argv[1],"r") as f:
+    script=non_hex_pattern.sub("", f.read())
+if len(script)%4!=0:
+    print("Script length must be multiple of 4",file=sys.stderr)
+    sys.exit(1)
+scriptt: list[int]=[int(i,base=16)for i in split(script,4)]
+DEBUG: bool="-d" in sys.argv or "--debug" in sys.argv
+i: int=0
+script_length: int=len(scriptt)
+while i<script_length:
+    command: int=scriptt[i]
+    if callable(memory[command]):
+        if i+1>=script_length:
+            print("Missing argument for instruction at the last chunk.",file=sys.stderr)
+            sys.exit(1)
+        memory[command](scriptt[i+1])
         i+=1
+    else:
+        if DEBUG:
+            print(f"{command:04X}: ",end="")
+        print(memory[command],file=memory[OUTPUT_ADDR],end="")
+    i+=1
