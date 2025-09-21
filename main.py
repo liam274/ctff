@@ -67,7 +67,7 @@ def debug(arg: int) -> None:
     for i, v in enumerate(memory):
         if v is not None:
             output.append(f"{i:04X}: {v!r}")
-    print("\n".join(output), file=memory[OUTPUT_ADDR])
+    memory[OUTPUT_ADDR].write("\n".join(output))
 def chra(arg: int)-> None:
     global memory
     memory[arg]=chr(memory[PREPARE_ADDR] or 0)
