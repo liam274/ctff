@@ -1,6 +1,6 @@
 from typing import Any, Callable, Iterator
 import random
-import getch  # type: ignore
+import getch # type: ignore
 import sys
 import re
 
