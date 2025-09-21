@@ -94,6 +94,7 @@ funcs: dict[int,Callable[...,Any]]={
     0xC0DE:chra,
     0xBEEF:print_mem,
     0xADD5:adds,
+    0xAD15:addint
 }
 
 for addr,func in funcs.items():
