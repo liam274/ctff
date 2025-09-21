@@ -80,6 +80,9 @@ def adds(arg: int) -> None:
 def addint(arg: int) -> None:
     global memory
     memory[arg]=("" if memory[arg] is None else memory[arg])+str(memory[PREPARE_ADDR] or 0)
+def print_raw(arg: int) -> None:
+    global memory
+    print(chr(arg),end="",file=memory[OUTPUT_ADDR])
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -94,7 +97,8 @@ funcs: dict[int,Callable[...,Any]]={
     0xC0DE:chra,
     0xBEEF:print_mem,
     0xADD5:adds,
-    0xAD15:addint
+    0xAD15:addint,
+    0x1BEF:print_raw
 }
 
 for addr,func in funcs.items():
@@ -125,6 +129,9 @@ while i<script_length:
         i+=1
     else:
         time: int=0
+        if memory[command] is None:
+            i+=1
+            continue
         while not callable(memory[command]):
             command=memory[command]
             time+=1
