@@ -12,13 +12,13 @@ IMPORTANT: dict[str,int]={
 
 PREPARE_ADDR: int=0xABCD
 OUTPUT_ADDR: int=0xAB
-memory: list[Any] = [None]*0xFFFF
-memory[PREPARE_ADDR]=random.randint(0,0xFFFF)
+MEM_SIZE: int=0xFFFF
+memory: list[Any] = [None]*MEM_SIZE
+memory[PREPARE_ADDR]=random.randint(0,MEM_SIZE)
 memory[OUTPUT_ADDR]=sys.stdout
 non_hex_pattern = re.compile(r"[^0-9A-Fa-f]")
 
 def getchar(prompt: str = "") -> str:
-    """Optimized character input function."""
     print(prompt, end="", flush=True)
     try:
         import msvcrt
@@ -44,16 +44,16 @@ def read(arg: int) -> None:
     memory[arg]=getchar(memory[PREPARE_ADDR] or "")
 def rand(arg: int) -> None:
     global memory
-    memory[arg]=random.randint(0,0xFFFF)
+    memory[arg]=random.randint(0,MEM_SIZE)
 def add(arg: int) -> None:
     global memory
-    memory[arg]=(memory[arg]+memory[memory[PREPARE_ADDR]])&0xFFFF
+    memory[arg]=(memory[arg]+memory[memory[PREPARE_ADDR]])&MEM_SIZE
 def sub(arg: int) -> None:
     global memory
-    memory[arg]=(memory[arg]-memory[memory[PREPARE_ADDR]])&0xFFFF
+    memory[arg]=(memory[arg]-memory[memory[PREPARE_ADDR]])&MEM_SIZE
 def xor(arg: int) -> None:
     global memory
-    memory[arg]=(memory[arg]^memory[memory[PREPARE_ADDR]])&0xFFFF
+    memory[arg]=(memory[arg]^memory[memory[PREPARE_ADDR]])&MEM_SIZE
 def prepare(arg: int) -> None:
     global memory
     memory[PREPARE_ADDR]=arg
@@ -61,7 +61,6 @@ def reset(arg: int):
     global memory
     memory[arg]=None
 def debug(arg: int) -> None:
-    """Optimized debug output."""
     output: list[str] = []
     for i, v in enumerate(memory):
         if v is not None:
@@ -69,7 +68,7 @@ def debug(arg: int) -> None:
     print("\n".join(output), file=memory[OUTPUT_ADDR])
 def chra(arg: int)-> None:
     global memory
-    memory[arg]=chr(memory[PREPARE_ADDR]&0xFFFF)
+    memory[arg]=chr(memory[PREPARE_ADDR]&MEM_SIZE)
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
