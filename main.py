@@ -83,6 +83,12 @@ def addint(arg: int) -> None:
 def print_raw(arg: int) -> None:
     global memory
     print(chr(arg),end="",file=memory[OUTPUT_ADDR])
+def pops(arg: int)-> None:
+    global memory
+    if memory[arg] is None or len(memory[arg])==0:
+        return
+    memory[PREPARE_ADDR]=ord(memory[arg][-1])
+    memory[arg]=memory[arg][:-1]
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -98,7 +104,8 @@ funcs: dict[int,Callable[...,Any]]={
     0xBEEF:print_mem,
     0xADD5:adds,
     0xAD15:addint,
-    0x1BEF:print_raw
+    0x1BEF:print_raw,
+    0xA0A5:pops
 }
 
 for addr,func in funcs.items():

@@ -26,6 +26,7 @@ See how hard it will be to decode!
 |ADD5|boxs[given box value]+=chr(prepare box value or 0)|
 |AD15|boxs[given box value]+=str(prepare boc value or 0)|
 |1BEF|print the given argument as char rawly|
+|A0A5|pop the last char of a box, and put it in the prepare box|
 
 ## Skills
 You can exchange build-in functions and any boxes to rename them:
