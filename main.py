@@ -2,6 +2,7 @@ from typing import Any, Callable
 import random
 import getch  # type: ignore
 import sys
+import re
 
 memory: list[Any] = [None]*0xFFFF
 memory[0xABCD]=random.randint(0,0xFFFF)
@@ -95,10 +96,7 @@ if __name__=="__main__":
         print("Usage: ctfuck [script]")
         sys.exit(1)
     with open(sys.argv[1],"r") as f:
-        script=f.read().translate(str.maketrans("","","".join(
-        c for c in map(chr, range(128))  
-        if not c.isprintable() or c in "\n\t "
-    )))
+        script=re.sub(r"[^0-9A-Fa-f]", "", f.read())
     scriptt: list[str]=split(script,4)
     skip: bool=False
     DEBUG: bool="-d" in sys.argv or "--debug" in sys.argv
