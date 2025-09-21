@@ -4,26 +4,18 @@ import getch  # type: ignore
 import sys
 import re
 
-memory: list[Any] = [None]*0xFFFF
-memory[0xABCD]=random.randint(0,0xFFFF)
-memory[0xAB]=sys.stdout
 VERSION: str="0.2.0"
 IMPORTANT: dict[str,int]={
     "prepare regex":0xABCD,
     "stdout":0xAB
 }
 
-class stack:
-    def __init__(self,sta:list[Any]):
-        self.sta=sta
-        self.ptr=0
-    def push(self,val: Any) -> None:
-        self.sta[self.ptr]=val
-        self.ptr+=1
-    def pop(self) -> Any:
-        self.ptr-=1
-        return self.sta[self.ptr]
-def getchar(prompt: str=""):
+memory: list[Any] = [None]*0xFFFF
+memory[0xABCD]=random.randint(0,0xFFFF)
+memory[0xAB]=sys.stdout
+non_hex_pattern = re.compile(r"[^0-9A-Fa-f]")
+
+def getchar(prompt: str = ""):
     print(prompt, end="", flush=True)
     try:
         import msvcrt
@@ -50,7 +42,7 @@ def write(arg: int) -> None:
     memory[arg]=memory[0xABCD]
 def read(arg: int) -> None:
     global memory
-    memory[arg]=getchar()
+    memory[arg]=getchar(memory[0xABCD] or "")
 def rand(arg: int) -> None:
     global memory
     memory[arg]=random.randint(0,0xFFFF)
@@ -89,33 +81,33 @@ funcs: dict[int,Callable[...,Any]]={
     0xC0DE:chra
 }
 
-for i,func in funcs.items():
-    memory[i]=func
-# STACK: stack=stack(memory)
+for addr,func in funcs.items():
+    memory[addr]=func
+
 if __name__=="__main__":
     print("This is ctffuck version "+VERSION+" environment.")
     if len(sys.argv)<2:
         print("Usage: ctfuck [script]")
         sys.exit(1)
     with open(sys.argv[1],"r") as f:
-        script=re.sub(r"[^0-9A-Fa-f]", "", f.read())
+        script=non_hex_pattern.sub("", f.read())
     if len(script)%4!=0:
         print("Script length must be multiple of 4",file=sys.stderr)
         sys.exit(1)
     scriptt: list[int]=[int(i,base=16)for i in split(script,4)]
     DEBUG: bool="-d" in sys.argv or "--debug" in sys.argv
     i: int=0
-    while i<len(scriptt):
+    script_length: int=len(scriptt)
+    while i<script_length:
         command: int=scriptt[i]
-        try:
-            if callable(memory[command]):
-                memory[command](scriptt[i+1])
-                i+=1
-            else:
-                if DEBUG:
-                    print(str(command)+": ",end="")
-                print(memory[command],file=memory[0xAB],end="")
-        except ValueError:
-            print(f"Invalid instruction: {i}",file=sys.stderr)
-            sys.exit(1)
+        if callable(memory[command]):
+            if i+1>=script_length:
+                print("Missing argument for instruction at the last chunk.",file=sys.stderr)
+                sys.exit(1)
+            memory[command](scriptt[i+1])
+            i+=1
+        else:
+            if DEBUG:
+                print(f"{command:04X}: ",end="")
+            print(memory[command],file=memory[0xAB],end="")
         i+=1
