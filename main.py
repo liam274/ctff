@@ -6,7 +6,7 @@ import re
 
 MAJOR: int=0
 MEDIUM: int=3
-MINOR: int=0
+MINOR: int=1
 VERSION: str=f"{MAJOR}.{MEDIUM}.{MINOR}"
 IMPORTANT: dict[str,int]={
     "prepare regex":0xABCD,
@@ -25,13 +25,12 @@ def getchar(prompt: str = "") -> str:
     print(prompt, end="", flush=True)
     try:
         import msvcrt
-        ch = msvcrt.getche()
+        ch = msvcrt.getch()
     except ImportError:
         ch = getch.getch()
     
     if isinstance(ch, bytes):
         ch = ch.decode()
-    print()
     return ch # type: ignore
 def split(s: str,l: int)-> Iterator[str]:
     return (s[i:i+l] for i in range(0,len(s),l))
@@ -44,7 +43,7 @@ def write(arg: int) -> None:
     memory[arg]=memory[PREPARE_ADDR]
 def read(arg: int) -> None:
     global memory
-    memory[arg]=getchar(memory[PREPARE_ADDR] or "")
+    memory[arg]=getchar(chr(memory[PREPARE_ADDR]) or "")
 def rand(arg: int) -> None:
     global memory
     memory[arg]=random.randint(0,MEM_SIZE)
