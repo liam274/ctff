@@ -97,18 +97,18 @@ if __name__=="__main__":
         sys.exit(1)
     with open(sys.argv[1],"r") as f:
         script=re.sub(r"[^0-9A-Fa-f]", "", f.read())
-    scriptt: list[str]=split(script,4)
-    skip: bool=False
+    if len(script)%4!=0:
+        print("Script length must be multiple of 4",file=sys.stderr)
+        sys.exit(1)
+    scriptt: list[int]=[int(i,base=16)for i in split(script,4)]
     DEBUG: bool="-d" in sys.argv or "--debug" in sys.argv
-    for i,it in enumerate(scriptt):
-        if skip:
-            skip=False
-            continue
+    i: int=0
+    while i<len(scriptt):
+        command: int=scriptt[i]
         try:
-            command=int(it,base=16)
             if callable(memory[command]):
-                memory[command](int(scriptt[i+1],base=16))
-                skip=True
+                memory[command](scriptt[i+1])
+                i+=1
             else:
                 if DEBUG:
                     print(str(command)+": ",end="")
@@ -116,3 +116,4 @@ if __name__=="__main__":
         except ValueError:
             print(f"Invalid instruction: {i}",file=sys.stderr)
             sys.exit(1)
+        i+=1
