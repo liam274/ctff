@@ -4,7 +4,10 @@ import getch  # type: ignore
 import sys
 import re
 
-VERSION: str="0.2.2"
+MAJOR: int=0
+MEDIUM: int=3
+MINOR: int=0
+VERSION: str=f"{MAJOR}.{MEDIUM}.{MINOR}"
 IMPORTANT: dict[str,int]={
     "prepare regex":0xABCD,
     "stdout":0xAB
