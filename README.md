@@ -8,7 +8,7 @@ See how hard it will be to decode!
 
 ## Functions
 `structure: func argument`
-### notice that, the following "given box" means, use the argument as id to get a box
+### Notice that, the following "given box" means, use the argument as id to get a box
 |  address   |    usage     |
 |:-----------|:------------:|
 |EACD|exchange the given box and the prepare box's value|
@@ -22,3 +22,11 @@ See how hard it will be to decode!
 |0BEE|prepare box=argument|
 |DEAD|output every non-None(non-null) value to the output box|
 |C0DE|given box=chr(prepare box)|
+
+## Skills
+You can exchange build-in functions and any boxes to rename them:
+```ctff
+0BEE AACB
+EACD 0100
+```
+Then you can use 0100 to access the write function!
