@@ -71,6 +71,12 @@ def debug(arg: int) -> None:
 def chra(arg: int)-> None:
     global memory
     memory[arg]=chr(memory[PREPARE_ADDR] or 0)
+def print_mem(arg: int) -> None:
+    global memory
+    print(memory[arg],file=memory[OUTPUT_ADDR])
+def adds(arg: int) -> None:
+    global memory
+    memory[arg]+=chr(memory[PREPARE_ADDR] or 0)
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -82,7 +88,9 @@ funcs: dict[int,Callable[...,Any]]={
     0xAEAE:reset,
     0xBEE:prepare,
     0xDEAD:debug,
-    0xC0DE:chra
+    0xC0DE:chra,
+    0xBEEF:print_mem,
+    0xADD5:adds
 }
 
 for addr,func in funcs.items():
@@ -112,7 +120,6 @@ while i<script_length:
         memory[command](scriptt[i+1])
         i+=1
     else:
-        if DEBUG:
-            print(f"{command:04X}: ",end="")
-        print(memory[command],file=memory[OUTPUT_ADDR],end="")
+        while not callable(memory[command]):
+            command=memory[command]
     i+=1

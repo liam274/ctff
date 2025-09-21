@@ -22,6 +22,8 @@ See how hard it will be to decode!
 |0BEE|prepare box=argument|
 |DEAD|output every non-None(non-null) value to the output box|
 |C0DE|given box=chr(prepare box)|
+|BEEF|print the given box to output box|
+|ADD5|boxs[given box value]=chr(prepare box value or 0)|
 
 ## Skills
 You can exchange build-in functions and any boxes to rename them:
