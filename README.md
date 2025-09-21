@@ -1,4 +1,4 @@
-# CTFF***
+# CTFF
 This programming language is designed for CTF.
 See how hard it will be to decode!
 
