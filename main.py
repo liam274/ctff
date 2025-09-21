@@ -7,6 +7,7 @@ import re
 memory: list[Any] = [None]*0xFFFF
 memory[0xABCD]=random.randint(0,0xFFFF)
 memory[0xAB]=sys.stdout
+VERSION: str="0.2.0"
 IMPORTANT: dict[str,int]={
     "prepare regex":0xABCD,
     "stdout":0xAB
@@ -92,6 +93,7 @@ for i,func in funcs.items():
     memory[i]=func
 # STACK: stack=stack(memory)
 if __name__=="__main__":
+    print("This is ctffuck version "+VERSION+" environment.")
     if len(sys.argv)<2:
         print("Usage: ctfuck [script]")
         sys.exit(1)
