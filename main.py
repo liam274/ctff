@@ -73,7 +73,7 @@ def chra(arg: int)-> None:
     memory[arg]=chr(memory[PREPARE_ADDR] or 0)
 def print_mem(arg: int) -> None:
     global memory
-    print(memory[arg],file=memory[OUTPUT_ADDR])
+    print(memory[arg],file=memory[OUTPUT_ADDR],end="")
 def adds(arg: int) -> None:
     global memory
     memory[arg]=("" if memory[arg] is None else memory[arg])+chr(memory[PREPARE_ADDR] or 0)
