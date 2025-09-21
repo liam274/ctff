@@ -4,7 +4,7 @@ import getch  # type: ignore
 import sys
 import re
 
-VERSION: str="0.2.0"
+VERSION: str="0.2.1"
 IMPORTANT: dict[str,int]={
     "prepare regex":0xABCD,
     "stdout":0xAB
