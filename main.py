@@ -76,7 +76,7 @@ def print_mem(arg: int) -> None:
     print(memory[arg],file=memory[OUTPUT_ADDR])
 def adds(arg: int) -> None:
     global memory
-    memory[arg]+=chr(memory[PREPARE_ADDR] or 0)
+    memory[arg]=("" if memory[arg] is None else memory[arg])+chr(memory[PREPARE_ADDR] or 0)
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
