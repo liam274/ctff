@@ -35,3 +35,6 @@ You can exchange build-in functions and any boxes to rename them:
 EACD 0100
 ```
 Then you can use `0100` to access the write function!
+
+## Attention!
+- If the program is running too long time, don't panic. It's just the script being WAY too long. Any Infinity loop will be inturpeted.
