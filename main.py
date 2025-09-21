@@ -4,69 +4,72 @@ import getch  # type: ignore
 import sys
 import re
 
-VERSION: str="0.2.1"
+VERSION: str="0.2.2"
 IMPORTANT: dict[str,int]={
     "prepare regex":0xABCD,
     "stdout":0xAB
 }
 
+PREPARE_ADDR: int=0xABCD
+OUTPUT_ADDR: int=0xAB
 memory: list[Any] = [None]*0xFFFF
-memory[0xABCD]=random.randint(0,0xFFFF)
-memory[0xAB]=sys.stdout
+memory[PREPARE_ADDR]=random.randint(0,0xFFFF)
+memory[OUTPUT_ADDR]=sys.stdout
 non_hex_pattern = re.compile(r"[^0-9A-Fa-f]")
 
-def getchar(prompt: str = ""):
+def getchar(prompt: str = "") -> str:
+    """Optimized character input function."""
     print(prompt, end="", flush=True)
     try:
         import msvcrt
         ch = msvcrt.getche()
-        if isinstance(ch, bytes):
-            ch = ch.decode()
-        print()
-        return ch
     except ImportError:
         ch = getch.getch()
-        if isinstance(ch, bytes):
-            ch = ch.decode()
-        print(ch, end="", flush=True)
-        print()
-        return ch
+    
+    if isinstance(ch, bytes):
+        ch = ch.decode()
+    print()
+    return ch # type: ignore
 def split(s: str,l: int)-> list[str]:
     return list(s[i:i+l] for i in range(0,len(s),l))
 
 def exchange(arg: int) -> None:
     global memory
-    memory[arg],memory[memory[0xABCD]]=memory[memory[0xABCD]],memory[arg]
+    memory[arg],memory[memory[PREPARE_ADDR]]=memory[memory[PREPARE_ADDR]],memory[arg]
 def write(arg: int) -> None:
     global memory
-    memory[arg]=memory[0xABCD]
+    memory[arg]=memory[PREPARE_ADDR]
 def read(arg: int) -> None:
     global memory
-    memory[arg]=getchar(memory[0xABCD] or "")
+    memory[arg]=getchar(memory[PREPARE_ADDR] or "")
 def rand(arg: int) -> None:
     global memory
     memory[arg]=random.randint(0,0xFFFF)
 def add(arg: int) -> None:
     global memory
-    memory[arg]=(memory[arg]+memory[memory[0xABCD]])&0xFFFF
+    memory[arg]=(memory[arg]+memory[memory[PREPARE_ADDR]])&0xFFFF
 def sub(arg: int) -> None:
     global memory
-    memory[arg]=(memory[arg]-memory[memory[0xABCD]])&0xFFFF
+    memory[arg]=(memory[arg]-memory[memory[PREPARE_ADDR]])&0xFFFF
 def xor(arg: int) -> None:
     global memory
-    memory[arg]=(memory[arg]^memory[memory[0xABCD]])&0xFFFF
+    memory[arg]=(memory[arg]^memory[memory[PREPARE_ADDR]])&0xFFFF
 def prepare(arg: int) -> None:
     global memory
-    memory[0xABCD]=arg
+    memory[PREPARE_ADDR]=arg
 def reset(arg: int):
     global memory
     memory[arg]=None
-def debug(arg: int)-> None:
-    global memory
-    print("\n".join(f"{i:04X}: {repr(v)}" for i,v in enumerate(memory) if v is not None),file=memory[0xAB])
+def debug(arg: int) -> None:
+    """Optimized debug output."""
+    output: list[str] = []
+    for i, v in enumerate(memory):
+        if v is not None:
+            output.append(f"{i:04X}: {v!r}")
+    print("\n".join(output), file=memory[OUTPUT_ADDR])
 def chra(arg: int)-> None:
     global memory
-    memory[arg]=chr(memory[0xABCD]&0xFFFF)
+    memory[arg]=chr(memory[PREPARE_ADDR]&0xFFFF)
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -85,7 +88,7 @@ for addr,func in funcs.items():
     memory[addr]=func
 
 if __name__=="__main__":
-    print("This is ctffuck version "+VERSION+" environment.")
+    print("This is ctffuck version",VERSION,"environment.")
     if len(sys.argv)<2:
         print("Usage: ctfuck [script]")
         sys.exit(1)
@@ -109,5 +112,5 @@ if __name__=="__main__":
         else:
             if DEBUG:
                 print(f"{command:04X}: ",end="")
-            print(memory[command],file=memory[0xAB],end="")
+            print(memory[command],file=memory[OUTPUT_ADDR],end="")
         i+=1
