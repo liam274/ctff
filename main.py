@@ -1,4 +1,4 @@
-from typing import Any, Callable
+from typing import Any, Callable, Iterator
 import random
 import getch  # type: ignore
 import sys
@@ -30,8 +30,8 @@ def getchar(prompt: str = "") -> str:
         ch = ch.decode()
     print()
     return ch # type: ignore
-def split(s: str,l: int)-> list[str]:
-    return list(s[i:i+l] for i in range(0,len(s),l))
+def split(s: str,l: int)-> Iterator[str]:
+    return (s[i:i+l] for i in range(0,len(s),l))
 
 def exchange(arg: int) -> None:
     global memory
