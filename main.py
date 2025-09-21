@@ -70,7 +70,7 @@ def debug(arg: int) -> None:
     print("\n".join(output), file=memory[OUTPUT_ADDR])
 def chra(arg: int)-> None:
     global memory
-    memory[arg]=chr(memory[PREPARE_ADDR]&MEM_SIZE)
+    memory[arg]=chr(memory[PREPARE_ADDR] or 0)
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
