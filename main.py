@@ -77,6 +77,9 @@ def print_mem(arg: int) -> None:
 def adds(arg: int) -> None:
     global memory
     memory[arg]=("" if memory[arg] is None else memory[arg])+chr(memory[PREPARE_ADDR] or 0)
+def addint(arg: int) -> None:
+    global memory
+    memory[arg]=("" if memory[arg] is None else memory[arg])+str(memory[PREPARE_ADDR] or 0)
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -90,7 +93,7 @@ funcs: dict[int,Callable[...,Any]]={
     0xDEAD:debug,
     0xC0DE:chra,
     0xBEEF:print_mem,
-    0xADD5:adds
+    0xADD5:adds,
 }
 
 for addr,func in funcs.items():
