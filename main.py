@@ -43,7 +43,7 @@ def write(arg: int) -> None:
     memory[arg]=memory[PREPARE_ADDR]
 def read(arg: int) -> None:
     global memory
-    memory[arg]=getchar(chr(memory[PREPARE_ADDR]) or "")
+    memory[arg]=getchar(chr(memory[PREPARE_ADDR] or 0))
 def rand(arg: int) -> None:
     global memory
     memory[arg]=random.randint(0,MEM_SIZE)
