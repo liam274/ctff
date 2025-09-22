@@ -158,6 +158,12 @@ def jmp(arg: int)->Union[None,int]:
     if memory[CONDITION_ADDR]:
         i=arg
         return 2
+def char(arg: int)-> Union[None,int]:
+    global memory
+    if memory[PREPARE_ADDR] is None:
+        print("Invaild string given",file=sys.stderr,end="")
+        return 1
+    memory[arg]=chr(memory[memory[PREPARE_ADDR]])
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -184,7 +190,8 @@ funcs: dict[int,Callable[...,Any]]={
     0xBEA:be,
     0x5EA:se,
     0x0AA:_not,
-    0xBBBB:jmp
+    0xBBBB:jmp,
+    0xC0D3:char
 }
 
 for addr,func in funcs.items():

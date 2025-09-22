@@ -37,6 +37,8 @@ See how hard it will be to decode!
 |`0BEA`|condition box=given box >= boxs[prepare box]|
 |`05EA`|condition box=given box <= boxs[prepare box]|
 |`00AA`|condition box=not condition box|
+|`BBBB`|jmp if condition box is True|
+|`C0D3`|given box=boxs[prepare box]|
 
 ## Skills
 You can exchange build-in functions and any boxes to rename them:
