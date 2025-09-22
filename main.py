@@ -3,6 +3,7 @@ import random
 import getch # type: ignore
 import sys
 import re
+import traceback
 
 MAJOR: int=0
 MEDIUM: int=4
@@ -90,6 +91,12 @@ def pops(arg: int)-> None:
 def pop(arg: int)-> None:
     global memory
     memory[PREPARE_ADDR]-=arg
+def open_file(arg: int)-> None:
+    global memory
+    try:
+        memory[memory[arg]]=open(memory[PREPARE_ADDR],"r")
+    except:
+        print(traceback.format_exc(),file=sys.stderr)
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -106,7 +113,9 @@ funcs: dict[int,Callable[...,Any]]={
     0xADD5:adds,
     0xAD15:addint,
     0x1BEF:print_raw,
-    0xA0A5:pops
+    0xA0A5:pops,
+    0x5A5:pop,
+    0xF0:open_file
 }
 
 for addr,func in funcs.items():
