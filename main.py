@@ -43,7 +43,7 @@ def exchange(arg: int) -> Union[None,int]:
     memory[arg],memory[memory[PREPARE_ADDR]]=memory[memory[PREPARE_ADDR]],memory[arg]
 def write(arg: int) -> Union[None,int]:
     global memory
-    memory[arg]=memory[PREPARE_ADDR]
+    memory[memory[PREPARE_ADDR]]=arg
 def read(arg: int) -> Union[None,int]:
     global memory
     if memory[PREPARE_ADDR] is None:
