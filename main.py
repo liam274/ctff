@@ -163,7 +163,8 @@ funcs: dict[int,Callable[...,Any]]={
     0xEAA:e,
     0xBEA:be,
     0x5EA:se,
-    0x0AA:_not
+    0x0AA:_not,
+    0xBBBB: jmp
 }
 
 for addr,func in funcs.items():
