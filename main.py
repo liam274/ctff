@@ -1,4 +1,4 @@
-from typing import Any, Callable, Iterator
+from typing import Any, Callable, Iterator, Union
 import random
 import getch # type: ignore
 import sys
@@ -39,96 +39,100 @@ def getchar(prompt: str = "") -> str:
 def split(s: str,l: int)-> Iterator[str]:
     return (s[i:i+l] for i in range(0,len(s),l))
 
-def exchange(arg: int) -> None:
+def exchange(arg: int) -> Union[None,int]:
     global memory
     memory[arg],memory[memory[PREPARE_ADDR]]=memory[memory[PREPARE_ADDR]],memory[arg]
-def write(arg: int) -> None:
+def write(arg: int) -> Union[None,int]:
     global memory
     memory[arg]=memory[PREPARE_ADDR]
-def read(arg: int) -> None:
+def read(arg: int) -> Union[None,int]:
     global memory
     if memory[PREPARE_ADDR] is None:
-        print("Invaild prepare box value.",file=sys.stderr)
-        return
+        print("Invaild prepare box value",file=sys.stderr,end="")
+        return 1
     memory[arg]=getchar(chr(memory[PREPARE_ADDR]))
-def rand(arg: int) -> None:
+def rand(arg: int) -> Union[None,int]:
     global memory
     memory[arg]=random.randint(0,MEM_SIZE)
-def add(arg: int) -> None:
+def add(arg: int) -> Union[None,int]:
     global memory
     memory[arg]=(memory[arg]+memory[memory[PREPARE_ADDR]])&MEM_SIZE
-def sub(arg: int) -> None:
+def sub(arg: int) -> Union[None,int]:
     global memory
     memory[arg]=(memory[arg]-memory[memory[PREPARE_ADDR]])&MEM_SIZE
-def xor(arg: int) -> None:
+def xor(arg: int) -> Union[None,int]:
     global memory
     memory[arg]=(memory[arg]^memory[memory[PREPARE_ADDR]])&MEM_SIZE
-def prepare(arg: int) -> None:
+def prepare(arg: int) -> Union[None,int]:
     global memory
     memory[PREPARE_ADDR]=arg
 def reset(arg: int):
     global memory
     memory[arg]=None
-def debug(arg: int) -> None:
+def debug(arg: int) -> Union[None,int]:
     print(memory,file=memory[OUTPUT_ADDR])
-def chra(arg: int)-> None:
+def chra(arg: int)-> Union[None,int]:
     global memory
     if memory[PREPARE_ADDR] is None:
-        print("Invaild prepare box value.",file=sys.stderr)
-        return
+        print("Invaild prepare box value",file=sys.stderr,end="")
+        return 1
     memory[arg]=chr(memory[PREPARE_ADDR])
-def print_mem(arg: int) -> None:
+def print_mem(arg: int) -> Union[None,int]:
     global memory
     print(memory[arg],file=memory[OUTPUT_ADDR],end="")
-def adds(arg: int) -> None:
+def adds(arg: int) -> Union[None,int]:
     global memory
     if memory[PREPARE_ADDR] is None:
-        print("Invaild prepare box value, not inited.",file=sys.stderr)
-        return
+        print("Invaild prepare box value, not inited",file=sys.stderr,end="")
+        return 1
     memory[arg]=(memory[arg] or "")+chr(memory[PREPARE_ADDR])
-def addint(arg: int) -> None:
+def addint(arg: int) -> Union[None,int]:
     global memory
     if memory[PREPARE_ADDR] is None:
-        print("Invaild prepare box value, not inited.",file=sys.stderr)
+        print("Invaild prepare box value, not inited",file=sys.stderr,end="")
+        return 1
     memory[arg]=(memory[arg] or "")+str(memory[PREPARE_ADDR])
-def print_raw(arg: int) -> None:
+def print_raw(arg: int) -> Union[None,int]:
     global memory
     print(chr(arg),end="",file=memory[OUTPUT_ADDR])
-def pops(arg: int)-> None:
+def pops(arg: int)-> Union[None,int]:
     global memory
     if memory[arg] is None or len(memory[arg])==0:
-        return
+        return 1
     memory[PREPARE_ADDR]=ord(memory[arg][-1])
     memory[arg]=memory[arg][:-1]
-def pop(arg: int)-> None:
+def pop(arg: int)-> Union[None,int]:
     global memory
     memory[PTR_ADDR]=(memory[PTR_ADDR]-arg if memory[PTR_ADDR]>=arg else 0)
     memory[memory[PTR_ADDR]]=None
-def open_file(arg: int)-> None:
+def open_file(arg: int)-> Union[None,int]:
     global memory
     try:
         memory[memory[arg]]=open(memory[PREPARE_ADDR],"a+")
     except:
-        print(traceback.format_exc(),file=sys.stderr)
-def char_prepare(arg: int) -> None:
+        print(traceback.format_exc(),file=sys.stderr,end="")
+def char_prepare(arg: int) -> Union[None,int]:
     global memory
     if memory[arg] is None:
-        print("Invaild sting given",file=sys.stderr)
-        return
+        print("Invaild sting given",file=sys.stderr,end="")
+        return 1
     memory[PREPARE_ADDR]=ord(memory[arg])
-def b(arg: int)-> None:
+def b(arg: int)-> Union[None,int]:
+    if memory[memory[PREPARE_ADDR]] is None:
+        print("Invaild box value",file=sys.stderr,end="")
+        return 1
     global memory
     memory[CONDITION_ADDR]=(memory[arg]>memory[memory[PREPARE_ADDR]])
-def s(arg: int)-> None:
+def s(arg: int)-> Union[None,int]:
     global memory
     memory[CONDITION_ADDR]=(memory[arg]<memory[memory[PREPARE_ADDR]])
-def e(arg: int)-> None:
+def e(arg: int)-> Union[None,int]:
     global memory
     memory[CONDITION_ADDR]=(memory[arg]==memory[memory[PREPARE_ADDR]])
-def be(arg: int)-> None:
+def be(arg: int)-> Union[None,int]:
     global memory
     memory[CONDITION_ADDR]=(memory[arg]>=memory[memory[PREPARE_ADDR]])
-def se(arg: int)-> None:
+def se(arg: int)-> Union[None,int]:
     global memory
     memory[CONDITION_ADDR]=(memory[arg]<=memory[memory[PREPARE_ADDR]])
 def _not(arg:int)->None:
@@ -201,11 +205,12 @@ i: int=0
 script_length: int=len(scriptt)
 while i<script_length:
     command: int=scriptt[i]
+    result: int
     if callable(memory[command]):
         if i+1>=script_length:
             print("Missing argument for instruction at the last chunk.",file=sys.stderr)
             sys.exit(1)
-        memory[command](scriptt[i+1])
+        result=memory[command](scriptt[i+1])
         i+=1
     else:
         if memory[command] is None:
@@ -224,7 +229,9 @@ while i<script_length:
         if i+1>=script_length:
             print("Missing argument for instruction at the last chunk.",file=sys.stderr)
             sys.exit(1)
-        memory[command](scriptt[i+1])
+        result=memory[command](scriptt[i+1])
         i+=1
+    if result==1:
+        print(" at chunk",i,file=sys.stderr)
     i+=1
 del memory
