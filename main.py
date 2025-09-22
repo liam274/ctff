@@ -63,11 +63,7 @@ def reset(arg: int):
     global memory
     memory[arg]=None
 def debug(arg: int) -> None:
-    output: list[str] = []
-    for i, v in enumerate(memory):
-        if v is not None:
-            output.append(f"{i:04X}: {v!r}")
-    memory[OUTPUT_ADDR].write("\n".join(output))
+    print(memory,file=memory[OUTPUT_ADDR])
 def chra(arg: int)-> None:
     global memory
     memory[arg]=chr(memory[PREPARE_ADDR] or 0)
