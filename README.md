@@ -51,7 +51,7 @@ Then you can use `0100` to access the write function!
 ## Attention!
 - If the program is running too long time, don't panic. It's just the script being WAY too long. Any Infinity loop will be inturpeted.
 
-# 中文版解釋
+# 一些對比
 
 歡迎來到CTFF的世界~
 本電腦語言為解釋型語言，相對於傳統語言有優點如下：
