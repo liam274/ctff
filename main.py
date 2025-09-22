@@ -118,19 +118,19 @@ def char_prepare(arg: int) -> None:
     memory[PREPARE_ADDR]=ord(memory[arg])
 def b(arg: int)-> None:
     global memory
-    memory[CONDITION_ADDR]=(memory[arg]>memory[PREPARE_ADDR])
+    memory[CONDITION_ADDR]=(memory[arg]>memory[memory[PREPARE_ADDR]])
 def s(arg: int)-> None:
     global memory
-    memory[CONDITION_ADDR]=(memory[arg]<memory[PREPARE_ADDR])
+    memory[CONDITION_ADDR]=(memory[arg]<memory[memory[PREPARE_ADDR]])
 def e(arg: int)-> None:
     global memory
-    memory[CONDITION_ADDR]=(memory[arg]==memory[PREPARE_ADDR])
+    memory[CONDITION_ADDR]=(memory[arg]==memory[memory[PREPARE_ADDR]])
 def be(arg: int)-> None:
     global memory
-    memory[CONDITION_ADDR]=(memory[arg]>=memory[PREPARE_ADDR])
+    memory[CONDITION_ADDR]=(memory[arg]>=memory[memory[PREPARE_ADDR]])
 def se(arg: int)-> None:
     global memory
-    memory[CONDITION_ADDR]=(memory[arg]<=memory[PREPARE_ADDR])
+    memory[CONDITION_ADDR]=(memory[arg]<=memory[memory[PREPARE_ADDR]])
 def _not(arg:int)->None:
     global memory
     memory[CONDITION_ADDR]=not memory[CONDITION_ADDR]

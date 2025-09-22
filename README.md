@@ -31,11 +31,11 @@ See how hard it will be to decode!
 |`05A5`|move the ptr and set the ptr pointed box to None|
 |`00F0`|open file name in prepare box and put it to boxs[given box value]|
 |`0BFF`|prepare box=ord(given box)|
-|`0BAA`|condition box=given box > prepare box|
-|`0EAA`|condition box=given box == prepare box|
-|`05AA`|condition box=given box < prepare box|
-|`0BEA`|condition box=given box >= prepare box|
-|`05EA`|condition box=given box <= prepare box|
+|`0BAA`|condition box=given box > boxs[prepare box]|
+|`0EAA`|condition box=given box == boxs[prepare box]|
+|`05AA`|condition box=given box < boxs[prepare box]|
+|`0BEA`|condition box=given box >= boxs[prepare box]|
+|`05EA`|condition box=given box <= boxs[prepare box]|
 |`00AA`|condition box=not condition box|
 
 ## Skills
