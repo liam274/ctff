@@ -32,7 +32,6 @@ def getchar(prompt: str = "") -> str:
         ch = msvcrt.getch()
     except ImportError:
         ch = getch.getch()
-    
     if isinstance(ch, bytes):
         ch = ch.decode()
     return ch # type: ignore
@@ -118,25 +117,40 @@ def char_prepare(arg: int) -> Union[None,int]:
         return 1
     memory[PREPARE_ADDR]=ord(memory[arg])
 def b(arg: int)-> Union[None,int]:
+    global memory
     if memory[memory[PREPARE_ADDR]] is None:
         print("Invaild box value",file=sys.stderr,end="")
         return 1
-    global memory
     memory[CONDITION_ADDR]=(memory[arg]>memory[memory[PREPARE_ADDR]])
 def s(arg: int)-> Union[None,int]:
     global memory
+    if memory[memory[PREPARE_ADDR]] is None:
+        print("Invaild box value",file=sys.stderr,end="")
+        return 1
     memory[CONDITION_ADDR]=(memory[arg]<memory[memory[PREPARE_ADDR]])
 def e(arg: int)-> Union[None,int]:
     global memory
+    if memory[memory[PREPARE_ADDR]] is None:
+        print("Invaild box value",file=sys.stderr,end="")
+        return 1
     memory[CONDITION_ADDR]=(memory[arg]==memory[memory[PREPARE_ADDR]])
 def be(arg: int)-> Union[None,int]:
     global memory
+    if memory[memory[PREPARE_ADDR]] is None:
+        print("Invaild box value",file=sys.stderr,end="")
+        return 1
     memory[CONDITION_ADDR]=(memory[arg]>=memory[memory[PREPARE_ADDR]])
 def se(arg: int)-> Union[None,int]:
     global memory
+    if memory[memory[PREPARE_ADDR]] is None:
+        print("Invaild box value",file=sys.stderr,end="")
+        return 1
     memory[CONDITION_ADDR]=(memory[arg]<=memory[memory[PREPARE_ADDR]])
-def _not(arg:int)->None:
+def _not(arg:int)->Union[None,int]:
     global memory
+    if memory[memory[PREPARE_ADDR]] is None:
+        print("Invaild box value",file=sys.stderr,end="")
+        return 1
     memory[CONDITION_ADDR]=not memory[CONDITION_ADDR]
 def jmp(arg: int)->None:
     global memory,i
