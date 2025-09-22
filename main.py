@@ -130,8 +130,12 @@ if __name__!="__main__":
     sys.exit(0)
 print("This is ctff version",VERSION,"environment.")
 if len(sys.argv)<2:
-    print("Usage: ctff [script]")
+    print("Usage: ctff scriptFile [commands...]")
     sys.exit(1)
+if "-c" in sys.argv or "--command" in sys.argv:
+    for key,func in funcs.items():
+        print(f"{key:04X}: {func.__name__}")
+    sys.exit(0)
 with open(sys.argv[1],"r") as f:
     script=non_hex_pattern.sub("", f.read())
 if len(script)%4!=0:
