@@ -40,3 +40,14 @@ Then you can use `0100` to access the write function!
 
 ## Attention!
 - If the program is running too long time, don't panic. It's just the script being WAY too long. Any Infinity loop will be inturpeted.
+
+# 中文版解釋
+
+歡迎來到CTFF的世界~
+本電腦語言為解釋型語言，相對於傳統語言有優點如下：
+|CTFF|傳統機械碼|
+|:-----------|:------------:|
+|✔️效能比傳統機械碼慢數百倍或以上|❌效能過高，讓人們忘記要改進電腦芯片|
+|✔️有許多BUG，讓程序員更注重語法|❌沒有BUG，讓程序員很容易就寫好一條程序|
+|✔️讓你體驗到傳統機械碼，同時又更flexible和更複雜|❌比CTFF更加簡單，太容易讓人看懂|
+|✔️可以亂加字符，超容錯|❌不可以亂加字符，會爆錯|
