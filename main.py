@@ -16,9 +16,11 @@ IMPORTANT: dict[str,int]={
 PREPARE_ADDR: int=0xABCD
 OUTPUT_ADDR: int=0xAB
 MEM_SIZE: int=0xFFFF
+PTR_ADDR: int=0xAAAA
 memory: list[Any] = [None]*MEM_SIZE
 memory[PREPARE_ADDR]=random.randint(0,MEM_SIZE)
 memory[OUTPUT_ADDR]=sys.stdout
+memory[PTR_ADDR]=0
 non_hex_pattern = re.compile(r"[^0-9A-Fa-f]")
 
 def getchar(prompt: str = "") -> str:
@@ -85,6 +87,9 @@ def pops(arg: int)-> None:
         return
     memory[PREPARE_ADDR]=ord(memory[arg][-1])
     memory[arg]=memory[arg][:-1]
+def pop(arg: int)-> None:
+    global memory
+    memory[PREPARE_ADDR]-=arg
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
