@@ -134,6 +134,10 @@ def se(arg: int)-> None:
 def _not(arg:int)->None:
     global memory
     memory[CONDITION_ADDR]=not memory[CONDITION_ADDR]
+def jmp(arg: int)->None:
+    global memory,i
+    if memory[CONDITION_ADDR]:
+        i=arg
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
