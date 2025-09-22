@@ -149,6 +149,9 @@ while i<script_length:
         if memory[command] is None:
             i+=1
             continue
+        if not isinstance(memory[command],int) and not callable(memory[command]):
+            print(f"Invalid command at chunk {i}: {memory[command]}",file=sys.stderr)
+            sys.exit(1)
         while not callable(memory[command]):
             command=memory[command]
             time+=1
