@@ -11,7 +11,7 @@ See how hard it will be to decode!
 `structure: func argument`
 ### Notice that, the following "given box" means, use the argument as id to get a box
 |  address   |    usage     |
-|:-----------|:------------:|
+|:-----------:|:------------:|
 |`EACD`|exchange the given box and the prepare box's value|
 |`AACB`|write the prepare box's value to the given box|
 |`AEAD`|print the prepare box's value as prompt and getchar to the given box|
