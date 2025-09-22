@@ -27,7 +27,7 @@ See how hard it will be to decode!
 |AD15|boxs[given box value]+=str(prepare boc value or 0)|
 |1BEF|print the given argument as char rawly|
 |A0A5|pop the last char of a box, and put it in the prepare box|
-|05A5|move the ptr|
+|05A5|move the ptr and set the ptr pointed box to None|
 |00F0|open file name in prepare box and put it to boxs[given box value]|
 
 ## Skills

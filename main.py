@@ -90,7 +90,8 @@ def pops(arg: int)-> None:
     memory[arg]=memory[arg][:-1]
 def pop(arg: int)-> None:
     global memory
-    memory[PREPARE_ADDR]-=arg
+    memory[PTR_ADDR]=(memory[PTR_ADDR]-arg if memory[PTR_ADDR]>=arg else 0)
+    memory[memory[PTR_ADDR]]=None
 def open_file(arg: int)-> None:
     global memory
     try:
