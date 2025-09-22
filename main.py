@@ -46,8 +46,11 @@ def write(arg: int) -> None:
     global memory
     memory[arg]=memory[PREPARE_ADDR]
 def read(arg: int) -> None:
+    if memory[PREPARE_ADDR] is None:
+        print("Invaild prepare box value.",file=sys.stderr)
+        return
     global memory
-    memory[arg]=getchar(chr(memory[PREPARE_ADDR] or 0))
+    memory[arg]=getchar(chr(memory[PREPARE_ADDR]))
 def rand(arg: int) -> None:
     global memory
     memory[arg]=random.randint(0,MEM_SIZE)
@@ -69,17 +72,25 @@ def reset(arg: int):
 def debug(arg: int) -> None:
     print(memory,file=memory[OUTPUT_ADDR])
 def chra(arg: int)-> None:
+    if memory[PREPARE_ADDR] is None:
+        print("Invaild prepare box value.",file=sys.stderr)
+        return
     global memory
-    memory[arg]=chr(memory[PREPARE_ADDR] or 0)
+    memory[arg]=chr(memory[PREPARE_ADDR])
 def print_mem(arg: int) -> None:
     global memory
     print(memory[arg],file=memory[OUTPUT_ADDR],end="")
 def adds(arg: int) -> None:
+    if memory[PREPARE_ADDR] is None:
+        print("Invaild prepare box value, not inited.",file=sys.stderr)
+        return
     global memory
-    memory[arg]=(memory[arg] or "")+chr(memory[PREPARE_ADDR] or 0)
+    memory[arg]=(memory[arg] or "")+chr(memory[PREPARE_ADDR])
 def addint(arg: int) -> None:
+    if memory[PREPARE_ADDR] is None:
+        print("Invaild prepare box value, not inited.",file=sys.stderr)
     global memory
-    memory[arg]=(memory[arg] or "")+str(memory[PREPARE_ADDR] or 0)
+    memory[arg]=(memory[arg] or "")+str(memory[PREPARE_ADDR])
 def print_raw(arg: int) -> None:
     global memory
     print(chr(arg),end="",file=memory[OUTPUT_ADDR])
@@ -100,8 +111,11 @@ def open_file(arg: int)-> None:
     except:
         print(traceback.format_exc(),file=sys.stderr)
 def char_prepare(arg: int) -> None:
+    if memory[arg] is None:
+        print("Invaild sting given",file=sys.stderr)
+        return
     global memory
-    memory[PREPARE_ADDR]=ord(memory[arg] or "\x00")
+    memory[PREPARE_ADDR]=ord(memory[arg])
 def b(arg: int)-> None:
     global memory
     memory[CONDITION_ADDR]=(memory[arg]>memory[PREPARE_ADDR])
