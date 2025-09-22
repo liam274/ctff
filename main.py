@@ -123,7 +123,6 @@ if len(script)%4!=0:
     print("Script length must be multiple of 4",file=sys.stderr)
     sys.exit(1)
 scriptt: list[int]=[int(i,base=16)for i in split(script,4)]
-DEBUG: bool="-d" in sys.argv or "--debug" in sys.argv
 i: int=0
 script_length: int=len(scriptt)
 while i<script_length:
