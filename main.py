@@ -150,3 +150,4 @@ while i<script_length:
             sys.exit(1)
         memory[command](scriptt[i+1])
     i+=1
+del memory
