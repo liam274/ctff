@@ -100,7 +100,7 @@ def open_file(arg: int)-> None:
         print(traceback.format_exc(),file=sys.stderr)
 def char_prepare(arg: int) -> None:
     global memory
-    memory[PREPARE_ADDR]=ord(memory[PREPARE_ADDR] or "\x00")
+    memory[PREPARE_ADDR]=ord(memory[arg] or "\x00")
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -119,7 +119,8 @@ funcs: dict[int,Callable[...,Any]]={
     0x1BEF:print_raw,
     0xA0A5:pops,
     0x5A5:pop,
-    0xF0:open_file
+    0xF0:open_file,
+    0xBFF:char_prepare
 }
 
 for addr,func in funcs.items():
