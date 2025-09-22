@@ -6,8 +6,8 @@ import re
 import traceback
 
 MAJOR: int=0
-MEDIUM: int=4
-MINOR: int=3
+MEDIUM: int=5
+MINOR: int=0
 VERSION: str=f"{MAJOR}.{MEDIUM}.{MINOR}"
 IMPORTANT: dict[str,int]={
     "prepare regex":0xABCD,
