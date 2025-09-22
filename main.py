@@ -98,6 +98,9 @@ def open_file(arg: int)-> None:
         memory[memory[arg]]=open(memory[PREPARE_ADDR],"a+")
     except:
         print(traceback.format_exc(),file=sys.stderr)
+def char_prepare(arg: int) -> None:
+    global memory
+    memory[PREPARE_ADDR]=ord(memory[PREPARE_ADDR] or "\x00")
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
