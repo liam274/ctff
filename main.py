@@ -153,10 +153,11 @@ def _not(arg:int)->Union[None,int]:
         print("Invaild box value",file=sys.stderr,end="")
         return 1
     memory[CONDITION_ADDR]=not memory[CONDITION_ADDR]
-def jmp(arg: int)->None:
+def jmp(arg: int)->Union[None,int]:
     global memory,i
     if memory[CONDITION_ADDR]:
         i=arg
+        return 2
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -248,5 +249,7 @@ while i<script_length:
     if result==1:
         print(" at chunk",hex(i)[2:],file=sys.stderr)
         sys.exit(1)
+    if result==2:
+        continue
     i+=1
 del memory
