@@ -18,6 +18,7 @@ PREPARE_ADDR: int=0xABCD
 OUTPUT_ADDR: int=0xAB
 MEM_SIZE: int=0xFFFF
 PTR_ADDR: int=0xAAAA
+CONDITION_ADDR: int=0xAAA0
 memory: list[Any] = [None]*MEM_SIZE
 memory[PREPARE_ADDR]=random.randint(0,MEM_SIZE)
 memory[OUTPUT_ADDR]=sys.stdout
@@ -101,6 +102,24 @@ def open_file(arg: int)-> None:
 def char_prepare(arg: int) -> None:
     global memory
     memory[PREPARE_ADDR]=ord(memory[arg] or "\x00")
+def b(arg: int)-> None:
+    global memory
+    memory[CONDITION_ADDR]=(memory[arg]>memory[PREPARE_ADDR])
+def s(arg: int)-> None:
+    global memory
+    memory[CONDITION_ADDR]=(memory[arg]<memory[PREPARE_ADDR])
+def e(arg: int)-> None:
+    global memory
+    memory[CONDITION_ADDR]=(memory[arg]==memory[PREPARE_ADDR])
+def be(arg: int)-> None:
+    global memory
+    memory[CONDITION_ADDR]=(memory[arg]>=memory[PREPARE_ADDR])
+def se(arg: int)-> None:
+    global memory
+    memory[CONDITION_ADDR]=(memory[arg]<=memory[PREPARE_ADDR])
+def _not(arg:int)->None:
+    global memory
+    memory[CONDITION_ADDR]=not memory[CONDITION_ADDR]
 funcs: dict[int,Callable[...,Any]]={
     0xEACD:exchange,
     0xAACB:write,
@@ -120,7 +139,13 @@ funcs: dict[int,Callable[...,Any]]={
     0xA0A5:pops,
     0x5A5:pop,
     0xF0:open_file,
-    0xBFF:char_prepare
+    0xBFF:char_prepare,
+    0xBAA:b,
+    0x5AA:s,
+    0xEAA:e,
+    0xBEA:be,
+    0x5EA:se,
+    0x0AA:_not
 }
 
 for addr,func in funcs.items():
