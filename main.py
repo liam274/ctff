@@ -46,10 +46,10 @@ def write(arg: int) -> None:
     global memory
     memory[arg]=memory[PREPARE_ADDR]
 def read(arg: int) -> None:
+    global memory
     if memory[PREPARE_ADDR] is None:
         print("Invaild prepare box value.",file=sys.stderr)
         return
-    global memory
     memory[arg]=getchar(chr(memory[PREPARE_ADDR]))
 def rand(arg: int) -> None:
     global memory
@@ -72,24 +72,24 @@ def reset(arg: int):
 def debug(arg: int) -> None:
     print(memory,file=memory[OUTPUT_ADDR])
 def chra(arg: int)-> None:
+    global memory
     if memory[PREPARE_ADDR] is None:
         print("Invaild prepare box value.",file=sys.stderr)
         return
-    global memory
     memory[arg]=chr(memory[PREPARE_ADDR])
 def print_mem(arg: int) -> None:
     global memory
     print(memory[arg],file=memory[OUTPUT_ADDR],end="")
 def adds(arg: int) -> None:
+    global memory
     if memory[PREPARE_ADDR] is None:
         print("Invaild prepare box value, not inited.",file=sys.stderr)
         return
-    global memory
     memory[arg]=(memory[arg] or "")+chr(memory[PREPARE_ADDR])
 def addint(arg: int) -> None:
+    global memory
     if memory[PREPARE_ADDR] is None:
         print("Invaild prepare box value, not inited.",file=sys.stderr)
-    global memory
     memory[arg]=(memory[arg] or "")+str(memory[PREPARE_ADDR])
 def print_raw(arg: int) -> None:
     global memory
@@ -111,10 +111,10 @@ def open_file(arg: int)-> None:
     except:
         print(traceback.format_exc(),file=sys.stderr)
 def char_prepare(arg: int) -> None:
+    global memory
     if memory[arg] is None:
         print("Invaild sting given",file=sys.stderr)
         return
-    global memory
     memory[PREPARE_ADDR]=ord(memory[arg])
 def b(arg: int)-> None:
     global memory
