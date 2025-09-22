@@ -94,7 +94,7 @@ def pop(arg: int)-> None:
 def open_file(arg: int)-> None:
     global memory
     try:
-        memory[memory[arg]]=open(memory[PREPARE_ADDR],"r")
+        memory[memory[arg]]=open(memory[PREPARE_ADDR],"a+")
     except:
         print(traceback.format_exc(),file=sys.stderr)
 funcs: dict[int,Callable[...,Any]]={
