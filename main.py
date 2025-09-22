@@ -246,7 +246,7 @@ while i<script_length:
         result=memory[command](scriptt[i+1])
         i+=1
     if result==1:
-        print(" at chunk",i,file=sys.stderr)
+        print(" at chunk",hex(i)[2:],file=sys.stderr)
         sys.exit(1)
     i+=1
 del memory
