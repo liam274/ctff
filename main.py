@@ -177,9 +177,6 @@ if "-c" in sys.argv or "--command" in sys.argv:
     sys.exit(0)
 with open(sys.argv[1],"r") as f:
     script=non_hex_pattern.sub("", f.read())
-if len(script)%4!=0:
-    print("Script length must be multiple of 4",file=sys.stderr)
-    sys.exit(1)
 tmp: str=""
 skip: bool=False
 for n in script:
@@ -191,6 +188,9 @@ for n in script:
     tmp+=n
 script=tmp
 del tmp
+if len(script)%4!=0:
+    print("Script length must be multiple of 4",file=sys.stderr)
+    sys.exit(1)
 scriptt: list[int]=[int(i,base=16)for i in split(script,4)]
 i: int=0
 script_length: int=len(scriptt)
