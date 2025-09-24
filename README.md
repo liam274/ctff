@@ -52,7 +52,7 @@ Then you can use `0100` to access the write function!
 - If the program is running too long time, don't panic. It's just the script being WAY too long. Any Infinity loop will be inturpeted.
 
 ## Copyright
-**You need to state the source before you use our project in anyways**
+**You need to state the source before you use our project in any way**
 
 # 一些對比
 
