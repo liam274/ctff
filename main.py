@@ -247,7 +247,7 @@ while i<script_length:
         while not callable(memory[command]):
             command=memory[command]
             _time+=1
-            if _time>MEM_SIZE:
+            if _time>0xFF:
                 print("Possible infinite loop detected.",file=sys.stderr)
                 sys.exit(1)
         if i+1>=script_length:
