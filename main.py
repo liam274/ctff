@@ -224,7 +224,7 @@ del tmp
 if len(script)%4!=0:
     print("Script length must be multiple of 4",file=sys.stderr)
     sys.exit(1)
-scriptt: list[int]=[int(i,base=16)for i in split(script,4)]
+scriptt: list[int]=list(map(lambda x: int(x, 16), split(script, 4)))
 script_length: int=len(scriptt)
 start: float=time.time()
 while i<script_length:
