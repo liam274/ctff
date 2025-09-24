@@ -4,6 +4,7 @@ import getch # type: ignore
 import sys
 import re
 import traceback
+import time
 
 MAJOR: int=0
 MEDIUM: int=5
@@ -225,6 +226,7 @@ if len(script)%4!=0:
     sys.exit(1)
 scriptt: list[int]=[int(i,base=16)for i in split(script,4)]
 script_length: int=len(scriptt)
+start: float=time.time()
 while i<script_length:
     command: int=scriptt[i]
     result: int
@@ -241,11 +243,11 @@ while i<script_length:
         if not isinstance(memory[command],int) and not callable(memory[command]):
             print(f"Invalid command at chunk {i}: {memory[command]}",file=sys.stderr)
             sys.exit(1)
-        time: int=0
+        _time: int=0
         while not callable(memory[command]):
             command=memory[command]
-            time+=1
-            if time>MEM_SIZE:
+            _time+=1
+            if _time>MEM_SIZE:
                 print("Possible infinite loop detected.",file=sys.stderr)
                 sys.exit(1)
         if i+1>=script_length:
@@ -259,4 +261,5 @@ while i<script_length:
     if result==2:
         continue
     i+=1
+print("Program finished in",time.time()-start,"seconds.")
 del memory
