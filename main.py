@@ -1,10 +1,11 @@
+import time
+start: float=time.time()
 from typing import Any, Callable, Iterator, Union
 import random
 import getch # type: ignore
 import sys
 import re
 import traceback
-import time
 
 MAJOR: int=0
 MEDIUM: int=5
@@ -194,16 +195,16 @@ funcs: dict[int,Callable[...,Any]]={
     0xBBBB:jmp,
     0xC0D3:char
 }
-
 for addr,func in funcs.items():
     memory[addr]=func
-
+print("This is ctff version",VERSION,"environment.")
+print("Finish initialization in",time.time()-start,"seconds.")
 if __name__!="__main__":
     sys.exit(0)
-print("This is ctff version",VERSION,"environment.")
 if len(sys.argv)<2:
     print("Usage: ctff scriptFile [commands...]")
     sys.exit(1)
+start=time.time()
 if "-c" in sys.argv or "--command" in sys.argv:
     for key,func in funcs.items():
         print(f"{key:04X}: {func.__name__}")
@@ -226,7 +227,8 @@ if len(script)%4!=0:
     sys.exit(1)
 scriptt: list[int]=list(map(lambda x: int(x, 16), split(script, 4)))
 script_length: int=len(scriptt)
-start: float=time.time()
+print("Finish precompile in",time.time()-start,"seconds.")
+start=time.time()
 while i<script_length:
     command: int=scriptt[i]
     result: int
