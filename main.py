@@ -8,7 +8,7 @@ import re
 import traceback
 
 MAJOR: int=0
-MEDIUM: int=5
+MEDIUM: int=6
 MINOR: int=0
 VERSION: str=f"{MAJOR}.{MEDIUM}.{MINOR}"
 IMPORTANT: dict[str,int]={
